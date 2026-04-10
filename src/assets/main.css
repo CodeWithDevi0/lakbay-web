@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@theme {
+  --color-lakbay-orange: #D97736;
+  --color-lakbay-teal: #2A8B8B;
+  --color-lakbay-bg: #F4EBE1;
+  --color-lakbay-text: #333333;
+}
