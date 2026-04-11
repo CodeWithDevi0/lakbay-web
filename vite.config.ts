@@ -8,7 +8,6 @@ import tailwindcss from '@tailwindcss/vite' // 1. ADD THIS LINE
 export default defineConfig({
   plugins: [
     vue(),
-    vueDevTools(),
     tailwindcss(), // 2. ADD THIS LINE
   ],
   resolve: {
