@@ -1,24 +1,58 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import ReceiptModal from '@/components/modals/Receipt.vue';
 
 const activeTab = ref('All');
-const tabs = ['All', 'Upcoming', 'Ongoing','Completed'];
+const tabs = ['All', 'Upcoming', 'Ongoing', 'Completed'];
+
+// Receipt Modal State
+const isReceiptOpen = ref(false);
+const selectedTrip = ref(null);
 
 const trips = ref([
   {
-    id: 1, title: 'Kota Beach Resort', location: 'Bantayan Cebu, Philippines', date: 'Dec 20-25, 2024',
-    status: 'Completed', spent: '₱5,550', totalBudget: '₱25,000', budgetPercent: 22,
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80'
+    id: 1, title: 'Kota Beach Resort', location: 'Bantayan Cebu, Philippines', date: 'Dec 20-25, 2026',
+    status: 'Upcoming', spent: '₱0', totalBudget: '₱25,000', budgetPercent: 0,
+    image: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=600&q=80',
+    link: '/trip_details' 
+  },
+  {
+    id: 2, title: 'El Nido Adventure', location: 'Palawan, Philippines', date: 'Nov 10-15, 2024',
+    status: 'Completed', spent: '₱25,550', totalBudget: '₱25,000', budgetPercent: 100,
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
+    link: '',
+    // PASS THE WHOLE OBJECT TO THE MODAL INSTEAD OF JUST AN IMAGE URL
+  },
+  {
+    id: 3, title: 'Camiguin Island Escape', location: 'Northern Mindanao', date: 'April 10-15, 2026',
+    status: 'Ongoing', spent: '₱5,550', totalBudget: '₱25,000', budgetPercent: 22,
+    image: 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=600&q=80',
+    link: ''
   }
 ]);
+
+const filteredTrips = computed(() => {
+  if (activeTab.value === 'All') return trips.value;
+  return trips.value.filter(trip => trip.status === activeTab.value);
+});
+
+const totalSpentDisplay = computed(() => {
+  const sum = filteredTrips.value.reduce((acc, trip) => {
+    return acc + parseInt(trip.spent.replace(/[^\d]/g, '') || 0);
+  }, 0);
+  return `₱${sum.toLocaleString()}`;
+});
+
+const openReceipt = (trip) => {
+  selectedTrip.value = trip;
+  isReceiptOpen.value = true;
+};
 </script>
 
 <template>
   <div class="p-6 sm:p-10 lg:p-12 max-w-5xl mx-auto">
-    
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-8">
       <h1 class="text-3xl font-bold text-[#2A8B8B]">Your Trips</h1>
-      
       <div class="bg-white rounded-xl flex items-center px-4 py-2 border border-gray-200 shadow-sm w-full sm:w-72">
         <input type="text" placeholder="Search trips..." class="bg-transparent border-none outline-none w-full text-sm text-gray-700">
       </div>
@@ -32,55 +66,65 @@ const trips = ref([
           {{ tab }}
         </button>
       </div>
-
-      <div class="flex gap-4 w-full lg:w-auto">
-        <div class="bg-orange-50 border border-orange-100 rounded-xl p-4 flex-1 lg:w-40">
-          <p class="text-xs text-[#D97736] font-semibold uppercase tracking-wide mb-1">Total Spent</p>
-          <p class="text-2xl font-bold text-gray-800">₱5,550</p>
-        </div>
+      <div class="bg-orange-50 border border-orange-100 rounded-xl p-4 w-full lg:w-48 text-right">
+        <p class="text-xs text-[#D97736] font-semibold uppercase tracking-wide mb-1">Total Spent</p>
+        <p class="text-2xl font-bold text-gray-800">{{ totalSpentDisplay }}</p>
       </div>
     </div>
 
-    <div v-if="activeTab === 'Upcoming'" class="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
-      <p class="font-bold text-gray-500 text-lg">No upcoming trips yet</p>
-      <p class="text-sm text-gray-400 mt-1">Time to start planning!</p>
+    <div v-if="filteredTrips.length === 0" class="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+      <p class="font-bold text-gray-500 text-lg">No {{ activeTab.toLowerCase() }} trips found</p>
     </div>
 
-    <div v-else-if="activeTab === 'Ongoing'" class="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
-      <p class="font-bold text-gray-500 text-lg">No upcoming trips yet</p>
-      <p class="text-sm text-gray-400 mt-1">Time to start planning!</p>
-    </div>
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div v-for="trip in filteredTrips" :key="trip.id" class="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col h-full">
+        <div class="w-full h-48 relative shrink-0">
+          <img :src="trip.image" class="absolute inset-0 w-full h-full object-cover" />
+          <span :class="[
+            'absolute top-3 left-3 backdrop-blur-md text-white text-[10px] uppercase tracking-wider font-bold px-3 py-1 rounded-full',
+            trip.status === 'Completed' ? 'bg-green-600/60' : trip.status === 'Ongoing' ? 'bg-blue-600/60' : 'bg-orange-600/60'
+          ]">{{ trip.status }}</span>
+        </div>
 
-    <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div v-for="trip in trips" :key="trip.id" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition">
-        <div class="flex flex-col sm:flex-row h-full">
-          <div class="w-full sm:w-2/5 h-48 sm:h-auto relative">
-            <img :src="trip.image" class="absolute inset-0 w-full h-full object-cover" />
-            <span class="absolute top-3 left-3 bg-black/50 backdrop-blur-md text-white text-[10px] uppercase tracking-wider font-bold px-3 py-1 rounded-full">{{ trip.status }}</span>
-          </div>
-
-          <div class="w-full sm:w-3/5 p-5 flex flex-col justify-between">
-            <div>
-              <h3 class="font-bold text-gray-800 text-lg mb-1">{{ trip.title }}</h3>
-              <p class="text-xs text-gray-500 mb-4">{{ trip.date }}</p>
-              
-              <div class="mb-2">
-                <div class="flex justify-between text-xs mb-1">
-                  <span class="font-semibold text-gray-600">Budget</span>
-                  <span class="font-bold text-[#2A8B8B]">{{ trip.budgetPercent }}%</span>
-                </div>
-                <div class="w-full bg-gray-100 rounded-full h-2">
-                  <div class="bg-[#2A8B8B] h-2 rounded-full" :style="{ width: trip.budgetPercent + '%' }"></div>
-                </div>
+        <div class="p-5 flex flex-grow flex-col justify-between">
+          <div>
+            <h3 class="font-bold text-gray-800 text-lg mb-1">{{ trip.title }}</h3>
+            <p class="text-xs text-gray-500 mb-4">{{ trip.date }}</p>
+            <div class="mb-4">
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-semibold text-gray-600">Budget Progress</span>
+                <span class="font-bold text-[#2A8B8B]">{{ trip.budgetPercent }}%</span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-2">
+                <div class="bg-[#2A8B8B] h-2 rounded-full transition-all duration-500" :style="{ width: trip.budgetPercent + '%' }"></div>
               </div>
             </div>
+          </div>
 
-            <button class="w-full mt-4 border border-gray-200 py-2 rounded-lg text-sm font-semibold text-gray-600 hover:bg-gray-50 transition">
-              View Itinerary
+          <div class="flex gap-2 mt-2">
+            <router-link :to="trip.link" class="flex-grow bg-white border border-gray-200 py-2.5 rounded-xl text-sm font-bold text-gray-600 hover:bg-gray-50 transition text-center">
+              {{ trip.status === 'Upcoming' ? 'View Plan' : 'View Itinerary' }}
+            </router-link>
+            
+            <button 
+              v-if="trip.status === 'Completed'" 
+              @click="openReceipt(trip)"
+              class="bg-[#D97736]/10 text-[#D97736] px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-[#D97736]/20 transition flex items-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Receipt
             </button>
           </div>
         </div>
       </div>
     </div>
+
+    <ReceiptModal 
+  :is-open="isReceiptOpen" 
+  :trip="selectedTrip"
+  @close="isReceiptOpen = false" 
+/>
   </div>
 </template>

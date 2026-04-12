@@ -1,12 +1,26 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+import { defineProps, defineEmits, watch, onUnmounted } from 'vue';
 
-defineProps({ isOpen: Boolean });
+const props = defineProps({ isOpen: Boolean });
 defineEmits(['close']);
+
+// Lock background scroll when modal is open
+watch(() => props.isOpen, (isOpen) => {
+  if (isOpen) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+});
+
+// Cleanup if component is destroyed
+onUnmounted(() => {
+  document.body.style.overflow = '';
+});
 </script>
 
 <template>
-  <div v-if="isOpen" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 p-4" @click.self="$emit('close')">
+  <div v-if="isOpen" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300 p-4">
     <div class="bg-white w-full max-w-md rounded-[2rem] overflow-hidden shadow-2xl animate-fade-in relative max-h-[90vh] flex flex-col">
       
       <div class="bg-[#D97736] px-6 py-5 flex justify-between items-center text-white shrink-0">
@@ -70,11 +84,3 @@ defineEmits(['close']);
     </div>
   </div>
 </template>
-
-<style scoped>
-@keyframes fade-in { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-.animate-fade-in { animation: fade-in 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-.custom-scrollbar::-webkit-scrollbar { width: 6px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
-</style>
