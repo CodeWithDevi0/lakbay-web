@@ -1,111 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --color-lakbay-orange: #D97736;
+  --color-lakbay-teal: #2A8B8B;
+  --color-lakbay-bg: #F8FAFB; /* Improved from pure white for better card visibility */
+  --color-lakbay-text: #333333;
+}
+
 /* ========================================== */
-/* RECEIPT MODAL GLOBAL STYLES                */
+/* GLOBAL CUSTOM CSS                          */
 /* ========================================== */
 
-@utility receipt-overlay {
-  @apply fixed inset-0 z-[1000] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 overflow-y-auto;
+/* 1. Global Background Depth */
+body {
+  background-color: var(--color-lakbay-bg); /* */
+  color: var(--color-lakbay-text);
 }
 
-@utility receipt-container {
-  @apply bg-[#Fdfbf9] w-full max-w-md rounded-[3rem] shadow-2xl flex flex-col my-auto relative overflow-hidden;
+/* 2. Global Animations */
+@keyframes fade-in { 
+  from { opacity: 0; transform: scale(0.95) translateY(10px); } 
+  to { opacity: 1; transform: scale(1) translateY(0); } 
 }
 
-@utility receipt-header {
-  @apply bg-[#D97736] p-10 pb-16 text-center relative;
+@keyframes slide-up { 
+  from { transform: translateY(100%); } 
+  to { transform: translateY(0); } 
 }
 
-.receipt-header .back-btn {
-  @apply absolute top-8 left-8 text-white/70 hover:text-white transition-all hover:scale-110 border-none bg-transparent cursor-pointer;
+.animate-fade-in { 
+  animation: fade-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
 }
 
-.receipt-header .brand-logo-wrapper {
-  @apply w-20 h-20 bg-white/20 backdrop-blur-md border border-white/30 rounded-full mx-auto flex items-center justify-center mb-4 shadow-inner;
+.animate-slide-up { 
+  animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
 }
 
-.receipt-title {
-  @apply text-white font-black text-xl opacity-95 tracking-[0.2em] uppercase m-0;
+/* 3. Global Custom Scrollbars */
+.custom-scrollbar::-webkit-scrollbar { 
+  width: 6px; 
+}
+.custom-scrollbar::-webkit-scrollbar-track { 
+  background: transparent; 
+}
+.custom-scrollbar::-webkit-scrollbar-thumb { 
+  background-color: #cbd5e1; 
+  border-radius: 20px; 
 }
 
-@utility receipt-paper-wrapper {
-  @apply px-6 -mt-10 relative z-10 mb-6;
+/* ========================================== */
+/* HIGH-IMPACT COMPONENT STYLES               */
+/* ========================================== */
+
+/* Defining these as utilities to prevent Tailwind v4 Parse Errors */
+
+@utility card-impact {
+  @apply bg-white border border-gray-200 ring-1 ring-black/[0.03] shadow-sm transition-all duration-300;
 }
 
-@utility receipt-paper {
-  @apply bg-white rounded-[2.5rem] p-8 border border-gray-100;
+@utility card-hover {
+  @apply hover:border-lakbay-teal hover:shadow-2xl hover:shadow-teal-900/5 hover:-translate-y-1;
 }
 
-.receipt-section {
-  @apply mb-6 last:mb-0 text-left;
+/* Receipt Modal Overrides for visibility */
+.receipt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
 }
 
-.section-label {
-  @apply text-[#2A8B8B] font-black border-b-2 border-[#2A8B8B] pb-1.5 mb-5 text-[12px] uppercase tracking-[0.15em] block;
+.receipt-container {
+  @apply bg-[#Fdfbf9] w-full max-w-md rounded-[3rem] shadow-2xl border border-white/20;
 }
 
-.info-grid {
-  @apply space-y-3.5;
+/* Summary Card Styles for Group Details */
+.summary-card-orange {
+  @apply bg-white p-10 rounded-[2.5rem] border-2 border-orange-100 text-center shadow-md shadow-orange-900/5;
 }
 
-.info-row {
-  @apply flex justify-between items-center text-sm;
-}
-
-.info-row .label {
-  @apply text-[#D97736] font-extrabold;
-}
-
-.info-row .val {
-  @apply text-gray-600 font-bold text-right;
-}
-
-.info-row .val.highlight {
-  @apply text-gray-900 font-black text-lg;
-}
-
-.divider-dashed {
-  @apply border-t-2 border-dashed border-gray-100 my-6 h-0 w-full;
-}
-
-.group-badge {
-  @apply flex items-center gap-3 bg-gray-50 p-2 pr-4 rounded-xl w-fit;
-}
-
-.itinerary-list {
-  @apply space-y-5;
-}
-
-.itinerary-item {
-  @apply flex justify-between items-start;
-}
-
-.item-name {
-  @apply text-[#D97736] font-black text-sm leading-tight;
-}
-
-@utility expense-card {
-  @apply bg-[#Fdfbf9] border border-[#2A8B8B]/10 rounded-2xl p-5 flex items-center gap-4;
-}
-
-.expense-icon {
-  @apply w-12 h-12 bg-[#2A8B8B] rounded-full flex items-center justify-center text-white font-black text-xl shrink-0;
-}
-
-.exp-amt {
-  @apply text-[#2A8B8B] font-black text-sm mb-0.5;
-}
-
-.exp-tag {
-  @apply bg-[#2A8B8B] text-white text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest;
-}
-
-.receipt-actions {
-  @apply px-10 pb-12 flex gap-4;
-}
-
-.btn-primary {
-  @apply flex-1 bg-[#D97736] border-2 border-[#D97736] py-3.5 rounded-2xl font-black text-white text-[10px] uppercase tracking-[0.2em] hover:bg-[#c4682c] transition-all;
-}
-
-.btn-secondary {
-  @apply flex-1 bg-white border-2 border-gray-200 py-3.5 rounded-2xl font-black text-gray-400 text-[10px] uppercase tracking-[0.2em] hover:border-[#D97736] hover:text-[#D97736] transition-all;
+.summary-card-teal {
+  @apply bg-white p-10 rounded-[2.5rem] border-2 border-teal-100 text-center shadow-md shadow-teal-900/5;
 }

@@ -23,6 +23,9 @@ const toggleMobileMenu = () => {
         <div class="hidden sm:flex items-center space-x-8">
           <router-link to="/plan" active-class="text-[#D97736] border-[#D97736]" class="text-gray-500 hover:text-[#2A8B8B] px-1 pt-1 border-b-2 border-transparent text-sm font-bold transition-colors">Plan</router-link>
           <router-link to="/trips" active-class="text-[#D97736] border-[#D97736]" class="text-gray-500 hover:text-[#2A8B8B] px-1 pt-1 border-b-2 border-transparent text-sm font-bold transition-colors">Trips</router-link>
+          
+          <router-link to="/groups" active-class="text-[#D97736] border-[#D97736]" class="text-gray-500 hover:text-[#2A8B8B] px-1 pt-1 border-b-2 border-transparent text-sm font-bold transition-colors">Groups</router-link>
+          
           <router-link to="/subscription" active-class="text-[#D97736] border-[#D97736]" class="text-[#D97736] hover:text-[#c4682c] px-1 pt-1 border-b-2 border-transparent text-sm font-bold transition-colors flex items-center gap-1">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
             Premium
@@ -51,6 +54,9 @@ const toggleMobileMenu = () => {
       <div class="px-4 pt-2 pb-6 space-y-1 flex flex-col">
         <router-link @click="isMobileMenuOpen = false" to="/plan" active-class="text-[#D97736] bg-orange-50" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-600 hover:bg-gray-50 transition-colors">Plan</router-link>
         <router-link @click="isMobileMenuOpen = false" to="/trips" active-class="text-[#D97736] bg-orange-50" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-600 hover:bg-gray-50 transition-colors">Trips</router-link>
+        
+        <router-link @click="isMobileMenuOpen = false" to="/groups" active-class="text-[#D97736] bg-orange-50" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-600 hover:bg-gray-50 transition-colors">Groups</router-link>
+        
         <router-link @click="isMobileMenuOpen = false" to="/subscription" active-class="text-[#D97736] bg-orange-50" class="block px-4 py-3 rounded-xl text-base font-bold text-[#D97736] hover:bg-orange-50 transition-colors flex items-center gap-2">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
           Premium

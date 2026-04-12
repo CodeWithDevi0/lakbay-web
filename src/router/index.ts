@@ -33,11 +33,24 @@ const router = createRouter({
       name: 'Subscription', 
       component: SubscriptionView 
     },
+    // Add these to your routes array in router/index.ts
+    { 
+      path: '/groups', 
+      name: 'Groups', 
+      component: () => import('@/views/GroupsView.vue') 
+    },
+    { 
+      path: '/groups/:id', 
+      name: 'GroupDetails', 
+      component: () => import('@/views/GroupDetailsView.vue') 
+    },
+    
     { 
       path: '/trip_details', 
       name: 'TripDetails',
       component: () => import('@/views/TripDetailsView.vue') 
     } // <-- Fixed the closing brace and indentation here
+    
   ]
 })
 
