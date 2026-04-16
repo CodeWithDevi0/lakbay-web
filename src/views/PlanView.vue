@@ -1,42 +1,64 @@
 <script setup>
 import { ref } from 'vue';
-
-// 1. Import your extracted Data
 import { destinationsData } from '@/assets/destinations.js';
 
-// 2. Import your external Modal Components
+// Import Modals
 import DestinationPanel from '@/components/modals/DestinationPanel.vue';
 import NewTripModal from '@/components/modals/NewTrip.vue';
 import JoinGroupModal from '@/components/modals/JoinGroup.vue';
 import ScanReceiptModal from '@/components/modals/ScanReceipt.vue';
+// Import the AI Modal
+import AiItinerary from '@/components/modals/AiItinerary.vue';
 
-// 3. Make data reactive
 const destinations = ref(destinationsData);
 
-// 4. Manage Modal States
 const activeModal = ref(null); 
 const selectedDestination = ref(null); 
 const isDetailsOpen = ref(false);
 
+// Search Query State
+const aiSearchQuery = ref('');
+
 const closeModal = () => { activeModal.value = null; };
 const openDetails = (dest) => { selectedDestination.value = dest; isDetailsOpen.value = true; };
 const closeDetails = () => { isDetailsOpen.value = false; };
+
+// Function to handle AI request
+const handleAskAI = () => {
+  if (aiSearchQuery.value.trim() === '') return; // Don't trigger if empty
+  activeModal.value = 'aiResult';
+};
 </script>
 
 <template>
-  <div class="pb-24 pt-10 min-h-screen bg-gray-50/30">
+  <div class="pb-24 pt-10 min-h-screen bg-[#F8FAFB]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      <div class="bg-gradient-to-r from-[#D97736] to-[#E59866] rounded-3xl p-6 sm:p-8 lg:p-12 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 mb-8 sm:mb-10 relative overflow-hidden">
+      <div class="bg-gradient-to-r from-[#D97736] to-[#E59866] rounded-[3rem] p-8 lg:p-12 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-8 mb-10 relative overflow-hidden">
         <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white opacity-10 blur-3xl"></div>
+        
         <div class="md:w-1/2 relative z-10 text-center md:text-left">
-          <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 flex items-center justify-center md:justify-start gap-2">Kamusta, YuKen! 👋</h2>
-          <p class="text-white/90 text-base sm:text-lg">Plan your next group adventure.</p>
+          <h2 class="text-3xl md:text-5xl font-black mb-3 flex items-center justify-center md:justify-start gap-3 tracking-tighter">Kamusta, YuKen!</h2>
+          <p class="text-white/90 text-lg font-medium">Plan your next group adventure.</p>
         </div>
+        
         <div class="md:w-1/2 w-full max-w-lg relative z-10">
-          <div class="bg-white rounded-3xl sm:rounded-full p-2 sm:p-1.5 flex flex-col sm:flex-row items-center shadow-xl border border-white/20 gap-2 sm:gap-0">
-            <input type="text" placeholder="Tell me what you're looking for..." class="flex-grow w-full bg-transparent border-none outline-none px-4 py-2 sm:py-0 text-gray-700 text-sm placeholder-gray-400 text-center sm:text-left">
-            <button class="w-full sm:w-auto bg-[#2A8B8B] text-white text-sm font-bold py-3 sm:py-3 px-8 rounded-2xl sm:rounded-full hover:bg-[#217070] transition shadow-sm whitespace-nowrap shrink-0">✨ Ask AI</button>
+          <div class="bg-white rounded-full p-2 flex flex-col sm:flex-row items-center shadow-2xl border-4 border-white/20 gap-2 sm:gap-0 focus-within:ring-4 focus-within:ring-[#2A8B8B]/30 transition-all">
+            
+            <input 
+              v-model="aiSearchQuery"
+              @keyup.enter="handleAskAI"
+              type="text" 
+              placeholder="E.g., 3 days in Palawan for 4 people..." 
+              class="flex-grow w-full bg-transparent border-none outline-none px-6 py-3 sm:py-0 text-gray-800 font-bold placeholder-gray-400 text-center sm:text-left"
+            >
+            
+            <button 
+              @click="handleAskAI"
+              class="w-full sm:w-auto bg-[#2A8B8B] text-white text-sm font-black uppercase tracking-widest py-4 px-8 rounded-full hover:bg-[#1e6666] hover:scale-105 transition-all shadow-md whitespace-nowrap shrink-0"
+            >
+              + Ask AI
+            </button>
           </div>
         </div>
       </div>
@@ -66,18 +88,18 @@ const closeDetails = () => { isDetailsOpen.value = false; };
           </div>
         </div>
       </div>
-    </div>
 
-    <DestinationPanel 
-      :is-open="isDetailsOpen" 
-      :destination="selectedDestination" 
-      @close="closeDetails" 
-      @create-trip="closeDetails(); activeModal = 'newTrip'" 
-    />
-    
+    </div> <DestinationPanel :is-open="isDetailsOpen" :destination="selectedDestination" @close="closeDetails" @create-trip="closeDetails(); activeModal = 'newTrip'" />
     <NewTripModal :is-open="activeModal === 'newTrip'" @close="closeModal" />
     <JoinGroupModal :is-open="activeModal === 'joinGroup'" @close="closeModal" />
     <ScanReceiptModal :is-open="activeModal === 'scanReceipt'" @close="closeModal" />
+    
+    <AiItinerary
+      :is-open="activeModal === 'aiResult'" 
+      :query="aiSearchQuery" 
+      @close="closeModal" 
+      @save="closeModal(); $router.push('/trips')" 
+    />
 
   </div>
 </template>
