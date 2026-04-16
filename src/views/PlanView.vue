@@ -7,7 +7,7 @@ import UserReviews from './UserReviews.vue';
 import DestinationPanel from '@/components/modals/DestinationPanel.vue';
 import NewTripModal from '@/components/modals/NewTrip.vue';
 import JoinGroupModal from '@/components/modals/JoinGroup.vue';
-import ScanReceiptModal from '@/components/modals/ScanReceipt.vue';
+// import ScanReceiptModal from '@/components/modals/ScanReceipt.vue';
 // Import the AI Modal
 import AiItinerary from '@/components/modals/AiItinerary.vue';
 
@@ -67,7 +67,7 @@ const handleAskAI = () => {
       <div class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-10 sm:mb-12">
         <button @click="activeModal = 'newTrip'" class="w-full sm:w-auto bg-white text-[#2A8B8B] border border-[#2A8B8B]/30 py-3 px-8 rounded-full font-bold text-sm shadow-sm hover:bg-teal-50 transition">+ Create New Trip</button>
         <button @click="activeModal = 'joinGroup'" class="w-full sm:w-auto bg-white text-[#2A8B8B] border border-[#2A8B8B]/30 py-3 px-8 rounded-full font-bold text-sm shadow-sm hover:bg-teal-50 transition">Join Group</button>
-        <button @click="activeModal = 'scanReceipt'" class="w-full sm:w-auto bg-white text-[#D97736] border border-[#D97736]/30 py-3 px-8 rounded-full font-bold text-sm shadow-sm hover:bg-orange-50 transition sm:ml-auto">📷 Scan Receipt</button>
+        <!-- <button @click="activeModal = 'scanReceipt'" class="w-full sm:w-auto bg-white text-[#D97736] border border-[#D97736]/30 py-3 px-8 rounded-full font-bold text-sm shadow-sm hover:bg-orange-50 transition sm:ml-auto">📷 Scan Receipt</button> -->
       </div>
 
       <div class="mb-12">
@@ -96,7 +96,7 @@ const handleAskAI = () => {
     </div> <DestinationPanel :is-open="isDetailsOpen" :destination="selectedDestination" @close="closeDetails" @create-trip="closeDetails(); activeModal = 'newTrip'" />
     <NewTripModal :is-open="activeModal === 'newTrip'" @close="closeModal" />
     <JoinGroupModal :is-open="activeModal === 'joinGroup'" @close="closeModal" />
-    <ScanReceiptModal :is-open="activeModal === 'scanReceipt'" @close="closeModal" />
+    <!-- <ScanReceiptModal :is-open="activeModal === 'scanReceipt'" @close="closeModal" /> -->
     
     <AiItinerary
       :is-open="activeModal === 'aiResult'" 

@@ -15,7 +15,7 @@ const toggleMobileMenu = () => {
       <div class="flex justify-between h-16 items-center">
         
         <div class="flex items-center">
-          <router-link to="/plan" class="text-xl sm:text-2xl font-serif font-bold text-[#2A8B8B] tracking-tight hover:opacity-80 transition shrink-0">
+          <router-link to="/" class="text-xl sm:text-2xl font-serif font-bold text-[#2A8B8B] tracking-tight hover:opacity-80 transition shrink-0">
             Lakbay<span class="text-[#D97736]">+</span>
           </router-link>
         </div>
