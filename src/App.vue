@@ -2,11 +2,13 @@
 import { RouterView, useRoute } from 'vue-router'
 import TopNavbar from './components/TopNavbar.vue'
 import MainFooter from './components/MainFooter.vue'
+// import UserReviews from './views/UserReviews.vue'
 
 const route = useRoute()
 
 // Tells Vue to hide Nav/Footer on Login
 const hideNavScreens = ['Login']
+
 </script>
 
 <template>
@@ -15,7 +17,8 @@ const hideNavScreens = ['Login']
     <TopNavbar v-if="!hideNavScreens.includes(route.name)" />
 
     <main class="w-full flex-grow flex flex-col">
-      <RouterView />
+      <!-- Landing Page -->
+      <RouterView/>
     </main>
 
     <MainFooter v-if="!hideNavScreens.includes(route.name)" />

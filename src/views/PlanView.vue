@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { destinationsData } from '@/assets/destinations.js';
+import UserReviews from './UserReviews.vue';
 
 // Import Modals
 import DestinationPanel from '@/components/modals/DestinationPanel.vue';
@@ -69,7 +70,7 @@ const handleAskAI = () => {
         <button @click="activeModal = 'scanReceipt'" class="w-full sm:w-auto bg-white text-[#D97736] border border-[#D97736]/30 py-3 px-8 rounded-full font-bold text-sm shadow-sm hover:bg-orange-50 transition sm:ml-auto">📷 Scan Receipt</button>
       </div>
 
-      <div>
+      <div class="mb-12">
         <h3 class="text-2xl text-[#2A8B8B] font-bold mb-6">Suggested Destinations</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           <div v-for="dest in destinations" :key="dest.id" @click="openDetails(dest)" class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow border border-gray-100 group cursor-pointer">
@@ -88,6 +89,9 @@ const handleAskAI = () => {
           </div>
         </div>
       </div>
+
+      <!-- imported from UserReviews.vue -->
+      <UserReviews/>
 
     </div> <DestinationPanel :is-open="isDetailsOpen" :destination="selectedDestination" @close="closeDetails" @create-trip="closeDetails(); activeModal = 'newTrip'" />
     <NewTripModal :is-open="activeModal === 'newTrip'" @close="closeModal" />

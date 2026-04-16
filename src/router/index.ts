@@ -4,6 +4,7 @@ import PlanView from '../views/PlanView.vue'
 import TripsView from '../views/TripsView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import SubscriptionView from '../views/SubscriptionView.vue'
+import UserReviews from '@/views/UserReviews.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +18,11 @@ const router = createRouter({
       path: '/plan', 
       name: 'Plan', 
       component: PlanView 
+    },
+    {
+      path: '/reviews',
+      name: 'Reviews',
+      component: UserReviews
     },
     { 
       path: '/trips', 
