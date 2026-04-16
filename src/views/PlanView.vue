@@ -35,7 +35,7 @@ const handleAskAI = () => {
   <div class="pb-24 pt-10 min-h-screen bg-[#F8FAFB]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      <div class="bg-gradient-to-r from-[#D97736] to-[#E59866] rounded-[3rem] p-8 lg:p-12 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-8 mb-10 relative overflow-hidden">
+      <div class="bg-gradient-to-r from-[#2A8B8B] to-[#1e6666] rounded-[3rem] p-8 lg:p-12 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-8 mb-10 relative overflow-hidden">
         <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white opacity-10 blur-3xl"></div>
         
         <div class="md:w-1/2 relative z-10 text-center md:text-left">
@@ -44,7 +44,7 @@ const handleAskAI = () => {
         </div>
         
         <div class="md:w-1/2 w-full max-w-lg relative z-10">
-          <div class="bg-white rounded-full p-2 flex flex-col sm:flex-row items-center shadow-2xl border-4 border-white/20 gap-2 sm:gap-0 focus-within:ring-4 focus-within:ring-[#2A8B8B]/30 transition-all">
+          <div class="bg-white rounded-full p-2 flex flex-col sm:flex-row items-center shadow-2xl border-4 border-white/20 gap-2 sm:gap-0 focus-within:ring-4 focus-within:ring-[#D97736]/30 transition-all">
             
             <input 
               v-model="aiSearchQuery"
@@ -56,9 +56,12 @@ const handleAskAI = () => {
             
             <button 
               @click="handleAskAI"
-              class="w-full sm:w-auto bg-[#2A8B8B] text-white text-sm font-black uppercase tracking-widest py-4 px-8 rounded-full hover:bg-[#1e6666] hover:scale-105 transition-all shadow-md whitespace-nowrap shrink-0"
+              class="w-full sm:w-auto bg-[#D97736] text-white text-sm font-black uppercase tracking-widest py-4 px-8 rounded-full hover:bg-[#c4682c] hover:scale-105 transition-all shadow-md whitespace-nowrap shrink-0 flex items-center justify-center gap-2"
             >
-              + Ask AI
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path>
+              </svg>
+              Ask AI
             </button>
           </div>
         </div>
@@ -67,8 +70,7 @@ const handleAskAI = () => {
       <div class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-10 sm:mb-12">
         <button @click="activeModal = 'newTrip'" class="w-full sm:w-auto bg-white text-[#2A8B8B] border border-[#2A8B8B]/30 py-3 px-8 rounded-full font-bold text-sm shadow-sm hover:bg-teal-50 transition">+ Create New Trip</button>
         <button @click="activeModal = 'joinGroup'" class="w-full sm:w-auto bg-white text-[#2A8B8B] border border-[#2A8B8B]/30 py-3 px-8 rounded-full font-bold text-sm shadow-sm hover:bg-teal-50 transition">Join Group</button>
-        <!-- <button @click="activeModal = 'scanReceipt'" class="w-full sm:w-auto bg-white text-[#D97736] border border-[#D97736]/30 py-3 px-8 rounded-full font-bold text-sm shadow-sm hover:bg-orange-50 transition sm:ml-auto">📷 Scan Receipt</button> -->
-      </div>
+        </div>
 
       <div class="mb-12">
         <h3 class="text-2xl text-[#2A8B8B] font-bold mb-6">Suggested Destinations</h3>
@@ -90,14 +92,11 @@ const handleAskAI = () => {
         </div>
       </div>
 
-      <!-- imported from UserReviews.vue -->
-      <UserReviews/>
-
-    </div> <DestinationPanel :is-open="isDetailsOpen" :destination="selectedDestination" @close="closeDetails" @create-trip="closeDetails(); activeModal = 'newTrip'" />
+      </div> 
+    
+    <DestinationPanel :is-open="isDetailsOpen" :destination="selectedDestination" @close="closeDetails" @create-trip="closeDetails(); activeModal = 'newTrip'" />
     <NewTripModal :is-open="activeModal === 'newTrip'" @close="closeModal" />
     <JoinGroupModal :is-open="activeModal === 'joinGroup'" @close="closeModal" />
-    <!-- <ScanReceiptModal :is-open="activeModal === 'scanReceipt'" @close="closeModal" /> -->
-    
     <AiItinerary
       :is-open="activeModal === 'aiResult'" 
       :query="aiSearchQuery" 
